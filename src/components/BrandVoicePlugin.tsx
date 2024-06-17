@@ -50,7 +50,7 @@ const FieldPlugin: FC = () => {
     } catch (error) {
       console.error('Something went wrong', error)
     } finally {
-      setIsLoading(true)
+      setIsLoading(false)
     }
   }
 
@@ -109,7 +109,7 @@ const FieldPlugin: FC = () => {
         Translate
       </button>
 
-      {transformedText && (
+      {transformedText && !isLoading && (
         <textarea
           style={{ minHeight: '10rem' }}
           value={transformedText}
