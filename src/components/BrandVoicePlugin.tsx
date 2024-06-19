@@ -67,7 +67,7 @@ const FieldPlugin: FC = () => {
         gap: '1rem',
       }}
     >
-      <input
+      <textarea
         value={text}
         onChange={(event) => setText(event.target.value)}
         style={{
