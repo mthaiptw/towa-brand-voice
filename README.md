@@ -5,7 +5,7 @@
 ## Requirements
 
 - Node `20.9.0`
-- npm
+- yarn
 
 ## Development
 
@@ -17,11 +17,10 @@ cp .env .env.local.example
 nvm use
 
 # Install dependencies
-npm install
+yarn install
 
 # Run dev server
-npm run dev
+yarn run dev
 ```
 
 Access the Sandbox link in terminal `https://plugin-sandbox.storyblok.com/field-plugin?url=...`
-
