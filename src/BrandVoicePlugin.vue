@@ -13,7 +13,7 @@ const plugin = useFieldPlugin({
 const isLoading = ref(false)
 
 const text = ref('')
-const textStyle = ref('')
+const textStyle = ref([])
 const language = ref('')
 
 const transformedText = ref('')
