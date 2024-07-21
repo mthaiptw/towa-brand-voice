@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import './example.css'
+import './styles.css'
 import { useFieldPlugin } from '@storyblok/field-plugin/vue3'
-import { onMounted, ref, watch } from 'vue';
+import { ref } from 'vue'
+import axios from 'axios'
 
 const plugin = useFieldPlugin({
   validateContent: (content: unknown) => ({
@@ -9,55 +10,82 @@ const plugin = useFieldPlugin({
   }),
 })
 
-const isLoading= ref(false)
+const isLoading = ref(false)
 
 const text = ref('')
 const textStyle = ref('')
-const language  = ref('')
+const language = ref('')
 
 const transformedText = ref('')
 
+const systemPrompt = ref('')
+const openModalSystemPrompt = ref(false)
+
 const handleTranslate = async () => {
-  isLoading.value = true;
-
-  const headers = new Headers()
-
-  headers.append(
-    'x-api-key',
-    import.meta.env.VITE_BRAND_VOIDE_ENGINE_X_API_KEY,
-  ) // TODO: config API key using Storyblok options
-  headers.append('Content-Type', 'application/json')
+  isLoading.value = true
 
   try {
-    // const apiRes = await fetch(`${apiBaseUrl}/transform_text`, {
-    const apiRes = await fetch(`/api/transform_text`, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify({
-        input_text: 'Text of user',
-        style: 'Business',
-        language: 'Deutsch',
+    const apiRes = await axios({
+      // url: 'http://159.89.213.205/transform_text',
+      url: '/api/transform_text',
+      method: 'post',
+      maxBodyLength: Infinity,
+      headers: {
+        'x-api-key': import.meta.env.VITE_BRAND_VOIDE_ENGINE_X_API_KEY, // TODO: config API key using Storyblok options
+        'Content-Type': 'application/json',
+      },
+      data: JSON.stringify({
+        input_text: text.value,
+        style: textStyle.value,
+        language: language.value,
       }),
     })
 
-    const data = await apiRes.json()
-
-    if (data.transformed_text) {
-      transformedText.value = data.transformed_text
+    // TODO: Handle error correctly
+    if (apiRes.data.transformed_text) {
+      transformedText.value = apiRes.data.transformed_text
       return
     }
 
-    console.error('No transformed text is available', data)
+    console.error('No transformed text is available', apiRes.data)
   } catch (error) {
     console.error('Something went wrong', error)
   } finally {
-    isLoading.value = false;
+    isLoading.value = false
   }
 }
 </script>
 
 <template>
   <div v-if="plugin.type === 'loaded'">
+    <SbModal
+      :is-open="openModalSystemPrompt"
+      @hide="openModalSystemPrompt = false"
+    >
+      <SbModalHeader
+        title="System Prompt"
+        align="left"
+      />
+      <SbModalContent>
+        <SbTextField
+          type="textarea"
+          v-model="systemPrompt"
+        />
+      </SbModalContent>
+      <SbModalFooter>
+        <SbButton
+          label="Cancel"
+          variant="tertiary"
+          @click="openModalSystemPrompt = false"
+        />
+        <SbButton
+          label="Save"
+          variant="primary"
+          @click="openModalSystemPrompt = false"
+        />
+      </SbModalFooter>
+    </SbModal>
+
     <div
       :style="{
         display: 'flex',
@@ -66,52 +94,41 @@ const handleTranslate = async () => {
         gap: '1rem',
       }"
     >
-      <textarea
-        :value="text"
-        @change="(event) => text = event.target.value"
-        :style="{
-          height: '4rem',
-        }"
+      <SbTextField
+        type="textarea"
+        :disabled="isLoading"
         placeholder="Text to translate"
+        v-model="text"
       />
 
-      <div
-        :style="{
-          display: 'flex',
-          flexDirection: 'row',
-          gap: '1rem',
-        }"
-      >
-        <input
-          :value="textStyle"
-          @change="(event) => textStyle = event.target.value"
-          :style="{
-            flex: 1,
-          }"
-          placeholder="Text style"
-        />
+      <SbSelect
+        label="Choose text style"
+        :options="[{ label: 'Business', value: 'Business' }]"
+        v-model="textStyle"
+      />
 
-        <input
-          :value="language"
-          @change="(event) => language = event.target.value"
-          :style="{
-            flex: 1,
-          }"
-          placeholder="Language"
-        />
-      </div>
+      <SbTextField
+        placeholder="Language"
+        v-model="language"
+      />
 
-      <button
+      <SbButton
+        @click="openModalSystemPrompt = true"
+        label="Config Propmt"
+        variant="tertiary"
+      />
+
+      <SbButton
         @click="handleTranslate"
-        :disabled="isLoading"
-      >
-        Translate
-      </button>
+        :isLoading="isLoading"
+        label="Translate"
+      />
 
-      <textarea
+      <SbTextField
         v-if="transformedText && !isLoading"
-        :style="{ minHeight: '10rem' }"
-        :value="transformedText"
+        type="textarea"
+        readonly
+        v-model="transformedText"
       />
     </div>
   </div>
