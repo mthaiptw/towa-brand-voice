@@ -11,6 +11,8 @@ if (!document.querySelector('#app')) {
   document.body.appendChild(rootElement)
 }
 
+// TODO: Fix 'Cannot find module X or its corresponding type declarations.ts(2307)'
+// @ts-ignore
 createApp(App).use(BlokInk).mount('#app')
 
 // This error replaces another error which message is harder to understand and impossible to avoid util the issue https://github.com/storyblok/field-plugin/issues/107 has been resolved.

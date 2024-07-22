@@ -26,6 +26,7 @@ const handleTranslate = async () => {
 
   try {
     const apiRes = await axios({
+      // TODO: Use https issue
       // url: 'http://159.89.213.205/transform_text',
       url: '/api/transform_text',
       method: 'post',
