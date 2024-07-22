@@ -19,13 +19,13 @@ export default defineConfig({
   server: {
     port: 8080,
     host: true,
-    proxy: {
-      '/api': {
-        // TODO: This is a temporary solution. Remove this after the API supports HTTPs
-        target: 'http://159.89.213.205',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
-      }
-    }
+    // proxy: {
+    //   '/api': {
+    //     // TODO: This is a temporary solution. Remove this after the API supports HTTPs
+    //     target: 'http://159.89.213.205',
+    //     changeOrigin: true,
+    //     rewrite: (path) => path.replace(/^\/api/, '')
+    //   }
+    // }
   },
 })
