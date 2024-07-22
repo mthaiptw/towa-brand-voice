@@ -104,7 +104,12 @@ const handleTranslate = async () => {
 
       <SbSelect
         label="Choose text style"
-        :options="[{ label: 'Business', value: 'Business' }]"
+        :options="[
+          { label: 'Corporate Wording', value: 'corporate' },
+          { label: 'HR Wording', value: 'hr' },
+          { label: 'Marketing Wording', value: 'marketing' },
+          { label: 'Legal Wording', value: 'legal' },
+        ]"
         v-model="textStyle"
       />
 
@@ -115,14 +120,14 @@ const handleTranslate = async () => {
 
       <SbButton
         @click="openModalSystemPrompt = true"
-        label="Config Prompt"
+        label="Edit Prompt"
         variant="tertiary"
       />
 
       <SbButton
         @click="handleTranslate"
         :isLoading="isLoading"
-        label="Apply Brand Voice"
+        label="Rewrite & Improve"
       />
 
       <SbTextField
