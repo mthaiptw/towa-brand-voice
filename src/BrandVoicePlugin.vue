@@ -115,14 +115,14 @@ const handleTranslate = async () => {
 
       <SbButton
         @click="openModalSystemPrompt = true"
-        label="Config Propmt"
+        label="Config Prompt"
         variant="tertiary"
       />
 
       <SbButton
         @click="handleTranslate"
         :isLoading="isLoading"
-        label="Translate"
+        label="Apply Brand Voice"
       />
 
       <SbTextField
