@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import './styles.css'
 import { useFieldPlugin } from '@storyblok/field-plugin/vue3'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import axios from 'axios'
 
 const plugin = useFieldPlugin({
@@ -20,6 +20,8 @@ const transformedText = ref('')
 
 const systemPrompt = ref('')
 const openModalSystemPrompt = ref(false)
+
+const showResult = computed(() => transformedText && !isLoading)
 
 const handleTranslate = async () => {
   isLoading.value = true
@@ -98,6 +100,7 @@ const handleTranslate = async () => {
         :disabled="isLoading"
         placeholder="Text to translate"
         v-model="text"
+        :rows="8"
       />
 
       <SbSelect
@@ -129,10 +132,16 @@ const handleTranslate = async () => {
       />
 
       <SbTextField
-        v-if="transformedText && !isLoading"
+        v-if="showResult"
         type="textarea"
         readonly
         v-model="transformedText"
+        :rows="8"
+      />
+
+      <SbButton
+        v-if="showResult"
+        label="Insert & Replace"
       />
     </div>
   </div>
