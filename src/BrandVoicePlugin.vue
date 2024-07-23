@@ -132,7 +132,7 @@ const handleTranslate = async () => {
       />
 
       <SbTextField
-        v-if="showResult"
+        v-if="transformedText && !isLoading"
         type="textarea"
         readonly
         v-model="transformedText"
@@ -140,7 +140,7 @@ const handleTranslate = async () => {
       />
 
       <SbButton
-        v-if="showResult"
+        v-if="transformedText && !isLoading"
         label="Insert & Replace"
       />
     </div>
