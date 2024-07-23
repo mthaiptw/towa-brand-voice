@@ -48,10 +48,9 @@ html {
   font-style: normal;
   line-height: 1.5;
   font-weight: 400;
-  /* TODO: Remove this dummy hotfix */
-  font-size: 0.75rem !important;
+  /* font-size: 0.575rem !important;
   font-synthesis: none;
-  text-rendering: optimizeLegibility;
+  text-rendering: optimizeLegibility; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
